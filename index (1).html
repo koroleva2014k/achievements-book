@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Книга достижений — каталог личных рекордов</title>
+<meta name="description" content="Каталог личных рекордов и заслуг участников: академические успехи, спорт, творчество и волонтёрство.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏅</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600&family=Unbounded:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0f1b2d; --paper:#eef1f5; --card:#fff; --line:#d5dbe4; --muted:#56637a;
+  --gold:#e8b53a; --acad:#2f5bea; --sport:#d9482b; --art:#14906a;
+  --hero-img:none; /* вставьте своё фото: url("hero.jpg") */
+  --display:"Unbounded","Arial Black",system-ui,sans-serif;
+  --body:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--body)}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;background:var(--ink) var(--hero-img) center/cover;color:#fff;min-height:92vh;display:flex;align-items:center}
+.hero::before{content:"";position:absolute;right:-12%;top:50%;width:min(80vw,760px);aspect-ratio:1;transform:translateY(-50%);border-radius:50%;
+  background:repeating-radial-gradient(circle,transparent 0 46px,rgba(232,181,58,.28) 46px 48px)}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(15,27,45,.92) 30%,rgba(15,27,45,.35))}
+.hero .wrap{position:relative;z-index:1;padding-top:72px;padding-bottom:72px}
+.hero h1{font:600 clamp(2.4rem,8vw,5.6rem)/1 var(--display);letter-spacing:-.03em;margin:0 0 28px}
+.hero h1 span{color:var(--gold)}
+.hero p{font-size:clamp(1.05rem,2.4vw,1.35rem);max-width:30em;color:#cfd8e6;margin:0 0 36px}
+.btn{display:inline-block;border:0;cursor:pointer;font:600 1rem var(--body);padding:15px 28px;border-radius:999px;background:var(--gold);color:var(--ink);text-decoration:none;transition:transform .15s,background .15s}
+.btn:hover{background:#f3c75a;transform:translateY(-2px)}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.dark:hover{background:#1d3150}
+
+/* About */
+.about{padding:96px 0 40px}
+.about p{font:500 clamp(1.25rem,3vw,1.9rem)/1.45 var(--body);max-width:28em;margin:0}
+.about small{display:block;color:var(--muted);margin-top:18px;font-size:1rem}
+
+/* Catalog */
+.catalog{padding:56px 0 96px}
+.head{display:flex;flex-wrap:wrap;gap:20px;align-items:end;justify-content:space-between;margin-bottom:28px}
+h2{font:600 clamp(1.7rem,4vw,2.5rem)/1.1 var(--display);letter-spacing:-.02em;margin:0}
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
+.chip{font:500 .95rem var(--body);padding:9px 18px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:background .15s,color .15s}
+.chip:hover{background:rgba(15,27,45,.08)}
+.chip[aria-pressed=true]{background:var(--ink);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:22px}
+.card{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:6px;padding:26px;display:flex;flex-direction:column;gap:14px}
+.card[hidden]{display:none}
+.top{display:flex;align-items:center;gap:16px}
+.ava{flex:none;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;color:#fff;font:600 1.2rem var(--display);background:var(--c)}
+.no{font:500 .85rem var(--body);color:var(--muted)}
+.card h3{margin:0;font:600 1.15rem/1.25 var(--body)}
+.tag{align-self:flex-start;font:600 .8rem var(--body);padding:4px 11px;border-radius:999px;color:var(--c);background:color-mix(in srgb,var(--c) 12%,#fff)}
+.card p{margin:0;color:#2c394e;font-size:1rem}
+.acad{--c:var(--acad)} .sport{--c:var(--sport)} .art{--c:var(--art)}
+
+/* Suggest strip */
+.suggest{background:var(--ink);color:#fff;padding:64px 0}
+.suggest .wrap{display:flex;flex-wrap:wrap;gap:24px;align-items:center;justify-content:space-between}
+.suggest p{margin:8px 0 0;color:#cfd8e6;max-width:30em}
+
+/* Footer */
+footer{padding:36px 0;color:var(--muted);font-size:.95rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:12px 32px;justify-content:space-between}
+
+/* Dialog */
+dialog{border:0;border-radius:10px;padding:0;width:min(520px,calc(100vw - 32px));max-height:92vh;color:var(--ink)}
+dialog::backdrop{background:rgba(15,27,45,.7)}
+form{padding:28px;display:grid;gap:16px}
+form h2{font-size:1.5rem}
+label{display:grid;gap:6px;font-weight:600;font-size:.95rem}
+input,select,textarea{font:400 1rem var(--body);padding:12px 14px;border:1.5px solid var(--line);border-radius:8px;width:100%;background:#fff;color:var(--ink)}
+input:focus,select:focus,textarea:focus{border-color:var(--acad);outline:2px solid var(--acad);outline-offset:0}
+textarea{min-height:110px;resize:vertical}
+.hint{font-weight:400;color:var(--muted);font-size:.85rem}
+.row{display:flex;gap:12px;justify-content:flex-end;flex-wrap:wrap}
+.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.ghost:hover{background:var(--paper)}
+.ok{padding:28px;display:grid;gap:14px}
+.ok[hidden],form[hidden]{display:none}
+
+@media (max-width:600px){
+  .wrap{padding:0 18px}
+  .hero::after{background:rgba(15,27,45,.8)}
+  .about{padding-top:64px}
+  .card{padding:22px}
+  .btn{width:100%;text-align:center}
+  .row .btn{width:auto;flex:1}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <h1>Книга<br><span>достижений</span></h1>
+    <p>Рекорды, победы и дела, которыми можно гордиться. Всё в одном месте.</p>
+    <a class="btn" href="#catalog">Смотреть каталог</a>
+  </div>
+</header>
+
+<section class="about" id="about">
+  <div class="wrap">
+    <p>Мы собираем личные рекорды и заслуги участников: от олимпиад и научных работ до спортивных кубков и волонтёрских акций. Книга достижений помогает сохранить важные результаты и вдохновляет тех, кто только начинает.</p>
+    <small>Знаете чей-то рекорд? Предложите его через форму ниже.</small>
+  </div>
+</section>
+
+<main class="catalog" id="catalog">
+  <div class="wrap">
+    <div class="head"><h2>Каталог достижений</h2></div>
+    <div class="filters" role="group" aria-label="Фильтр по категориям" id="filters"></div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+  </div>
+</main>
+
+<section class="suggest" id="suggest">
+  <div class="wrap">
+    <div>
+      <h2>Есть рекорд, который стоит записать?</h2>
+      <p>Заявка попадёт к администратору на проверку и появится в каталоге только после одобрения.</p>
+    </div>
+    <button class="btn" type="button" id="open">Предложить рекорд</button>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Книга достижений. Демо-проект, все имена вымышлены.</span>
+    <span>Контакты: <a href="mailto:admin@example.com">admin@example.com</a></span>
+  </div>
+</footer>
+
+<dialog id="dlg" aria-labelledby="dlgTitle">
+  <form id="form" method="dialog">
+    <h2 id="dlgTitle">Предложить рекорд</h2>
+    <label>ФИО
+      <input name="name" required autocomplete="name" placeholder="Иванов Иван Иванович">
+    </label>
+    <label>Категория
+      <select name="category" required>
+        <option value="">Выберите категорию</option>
+        <option>Академические достижения</option>
+        <option>Спортивные рекорды</option>
+        <option>Творчество и активизм</option>
+      </select>
+    </label>
+    <label>Описание рекорда
+      <textarea name="text" required placeholder="Что именно удалось сделать, когда и где"></textarea>
+    </label>
+    <label>Ссылка на видео или файл
+      <input name="link" type="url" placeholder="https://">
+      <span class="hint">Загрузите файл в облако (Google Диск, Яндекс Диск) и вставьте ссылку.</span>
+    </label>
+    <div class="row">
+      <button class="btn ghost" type="button" id="close">Отмена</button>
+      <button class="btn dark" type="submit">Отправить на проверку</button>
+    </div>
+  </form>
+  <div class="ok" id="ok" hidden>
+    <h2>Заявка отправлена</h2>
+    <p>Спасибо! Администратор проверит данные и добавит запись в каталог.</p>
+    <div class="row"><button class="btn dark" type="button" id="done">Закрыть</button></div>
+  </div>
+</dialog>
+
+<script>
+/* ===== Настройки ===== */
+// Почта администратора (Gmail или Яндекс), куда приходят заявки.
+const ADMIN_EMAIL = "admin@example.com";
+// Для отправки без почтового клиента: создайте бесплатную форму на formspree.io,
+// вставьте её адрес вида "https://formspree.io/f/xxxxxxx". Пока пусто, откроется письмо в почте.
+const FORM_ENDPOINT = "";
+
+/* ===== Данные каталога (демо) ===== */
+const CATS = {
+  all:  {label:"Все"},
+  acad: {label:"Академические достижения"},
+  sport:{label:"Спортивные рекорды"},
+  art:  {label:"Творчество и активизм"}
+};
+const PEOPLE = [
+  {name:"Анна Верещагина", cat:"acad", text:"Победитель региональной олимпиады по химии. Автор исследования о биоразлагаемой упаковке, представленного на городской научной конференции."},
+  {name:"Максим Орлов", cat:"sport", text:"Чемпион города по плаванию на 200 м вольным стилем. Обладатель школьного рекорда на этой дистанции."},
+  {name:"София Лебедева", cat:"art", text:"Лауреат конкурса молодых иллюстраторов. Организовала акцию по сбору книг для сельских библиотек и собрала более 400 томов."},
+  {name:"Елизавета Громова", cat:"acad", text:"Призёр всероссийской олимпиады по математике. Ведёт кружок для школьников 5–7 классов."},
+  {name:"Даниил Крылов", cat:"sport", text:"Победитель областных соревнований по лёгкой атлетике в беге на 1500 м. Кубок области, 2025."},
+  {name:"Артём Белов", cat:"art", text:"Координатор волонтёрского проекта по уборке городских парков: 12 акций и более 300 участников."}
+];
+
+/* ===== Рендер ===== */
+const filters = document.getElementById("filters");
+const grid = document.getElementById("grid");
+const initials = n => n.split(" ").slice(0,2).map(w => w[0]).join("");
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+grid.innerHTML = PEOPLE.map((p,i) => `
+  <article class="card ${p.cat}" data-cat="${p.cat}">
+    <div class="top">
+      <div class="ava" aria-hidden="true">${initials(p.name)}</div>
+      <div><span class="no">Запись № ${String(i+1).padStart(3,"0")}</span><h3>${esc(p.name)}</h3></div>
+    </div>
+    <span class="tag">${CATS[p.cat].label}</span>
+    <p>${esc(p.text)}</p>
+  </article>`).join("");
+
+filters.innerHTML = Object.entries(CATS).map(([k,v]) => {
+  const n = k === "all" ? PEOPLE.length : PEOPLE.filter(p => p.cat === k).length;
+  return `<button class="chip" type="button" data-f="${k}" aria-pressed="${k==="all"}">${v.label} · ${n}</button>`;
+}).join("");
+
+filters.addEventListener("click", e => {
+  const b = e.target.closest(".chip"); if (!b) return;
+  filters.querySelectorAll(".chip").forEach(c => c.setAttribute("aria-pressed", c === b));
+  const f = b.dataset.f;
+  grid.querySelectorAll(".card").forEach(c => c.hidden = f !== "all" && c.dataset.cat !== f);
+});
+
+/* ===== Форма ===== */
+const dlg = document.getElementById("dlg"), form = document.getElementById("form"), ok = document.getElementById("ok");
+const show = () => { form.hidden = false; ok.hidden = true; dlg.showModal(); };
+document.getElementById("open").onclick = show;
+document.getElementById("close").onclick = () => dlg.close();
+document.getElementById("done").onclick = () => { dlg.close(); form.reset(); };
+dlg.addEventListener("click", e => { if (e.target === dlg) dlg.close(); });
+
+form.addEventListener("submit", async e => {
+  e.preventDefault();
+  const d = Object.fromEntries(new FormData(form));
+  if (FORM_ENDPOINT) {
+    try {
+      const r = await fetch(FORM_ENDPOINT, {method:"POST", headers:{"Content-Type":"application/json", "Accept":"application/json"}, body:JSON.stringify(d)});
+      if (!r.ok) throw 0;
+    } catch { alert("Не удалось отправить заявку. Попробуйте ещё раз или напишите на " + ADMIN_EMAIL); return; }
+  } else {
+    const body = `ФИО: ${d.name}\nКатегория: ${d.category}\nОписание: ${d.text}\nСсылка: ${d.link || "—"}`;
+    location.href = `mailto:${ADMIN_EMAIL}?subject=${encodeURIComponent("Новая заявка: рекорд")}&body=${encodeURIComponent(body)}`;
+  }
+  form.hidden = true; ok.hidden = false;
+});
+</script>
+</body>
+</html>
